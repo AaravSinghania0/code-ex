@@ -83,7 +83,7 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 					<tr>
 						<th className="px-4 py-2">
 							<button
-								className="text-red-700 hover:text-red-500 hover:scale-125 transition ease-in-out duration-300"
+								className="btn btn-ghost hover:bg-transparent text-red-700 hover:text-red-500 hover:scale-125 transition ease-in-out duration-300"
 								onClick={handleDeleteAll}
 							>
 								<FiTrash2 />
@@ -100,11 +100,11 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 						<tr
 							key={index}
 							// className="hover:bg-gradient-to-br from-indigo-600/40 via-purple-600/40 to-pink-600/40 transition ease-in-out  hover:text-white duration-300"
-							className="hover:bg-purple-600/40 hover:text-white shadow-inner transition ease-in-out duration-300"
+							className="hover:bg-purple-600/40 hover:ring-1 ring-indigo-300 hover:text-white shadow-inner transition ease-in-out duration-300"
 						>
 							<td className="px-4 py-2">
 								<button
-									className="text-red-700 hover:text-red-500 hover:scale-125 transition ease-in-out duration-300"
+									className="btn btn-ghost hover:bg-transparent text-red-700  hover:text-red-500 hover:scale-125 transition ease-in-out duration-300"
 									onClick={() => handleDelete(file.name)}
 								>
 									<RxCrossCircled />
@@ -120,13 +120,13 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 							<td className="px-4 py-2 text-center">
 								{file.reportGenerated ? (
 									<button
-										className="btn btn-ghost btn-sm hover:scale-110 hover:shadow-md transition ease-in-out duration-300"
+										className="btn btn-outline btn-sm bg-gradient-to-br text-gray-300 hover:from-indigo-300 hover:to-white hover:scale-110 hover:shadow-md transition ease-in-out duration-300"
 										onClick={() =>
 											handleDownload(file.name)
 										}
 									>
-										<FiDownload />
-										Download
+										<FiDownload className="scale-125" />
+										{/* Download */}
 									</button>
 								) : (
 									<span className="text-gray-400">
@@ -138,13 +138,15 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 					))}
 				</tbody>
 			</table>
-			<button
-				className="btn btn-md m-4 py-4 text-gray-300 hover:text-white rounded-lg px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500"
-				onClick={handleDownloadAll}
-			>
-				<ImFolderDownload />
-				Download All
-			</button>
+			{files.filter((file) => file.reportGenerated).length > 1 && (
+				<button
+					className="btn btn-md m-4 py-4 text-gray-300 hover:text-white rounded-lg px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500"
+					onClick={handleDownloadAll}
+				>
+					<ImFolderDownload />
+					Download All
+				</button>
+			)}
 		</div>
 	);
 }

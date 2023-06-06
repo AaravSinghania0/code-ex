@@ -1,3 +1,4 @@
+"use client";
 import "./globals.css";
 import React, { useState } from "react";
 import { FiUpload } from "react-icons/fi";
