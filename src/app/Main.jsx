@@ -47,7 +47,7 @@ const ReportButton = ({ files, onExecute }) => {
 				className="btn btn-md text-gray-300 hover:text-white rounded-lg py-2 px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500"
 			>
 				<BsFileEarmarkCode />
-				Execute Files
+				Execute
 			</label>
 			<input
 				id="report-btn"
@@ -112,7 +112,7 @@ export default function Main() {
 				/>
 			</div>
 
-			<div className="mx-auto max-w-full py-24 sm:py-40 lg:py-48">
+			<div className="mx-auto max-w-full py-24 sm:py-28 lg:py-32">
 				<div className="hidden sm:mb-8 sm:flex sm:justify-center">
 					<div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-400 ring-1 ring-gray-300/20 transition ease-in-out duration-300 hover:text-white hover:ring-gray-300/50">
 						Join our Discord server{" "}
@@ -129,14 +129,32 @@ export default function Main() {
 					</div>
 				</div>
 				<div className="text-center">
-					<h1 className="text-4xl font-bold tracking-tight text-gray-300 sm:text-6xl flex items-center justify-center gap-x-4">
+					<h1 className="text-3xl font-bold tracking-tight text-gray-300 sm:text-6xl flex items-center justify-center gap-x-4">
 						Test your code online
 						<BsRocketTakeoff className="text-gray-400 hover:text-white transition ease-in-out duration-300" />
 					</h1>
 					<p className="mt-6 text-lg leading-8 text-gray-400">
-						Upload multiple files of code and get detailed reports
-						on the errors in the code by virtually executing them
-						simultaneously.
+						Upload and run multiple files of code and get detailed
+						reports on the outputs or errors in the code by
+						virtually executing them simultaneously.
+					</p>
+					<p className="mx-auto w-1/2 mt-4 text-lg leading-8 text-gray-400">
+						Step 1: Choose & upload the files containing the code
+						you wish to run.
+						<br />
+						(You can remove or add more files later as well.)
+						<br />
+						Step 2: Click on execute to run the selected files.
+						<br />
+						(Note: The API used for code execution is rate-limited
+						to 5 requests per second. It may take some time to run
+						more than 5 files.)
+						<br />
+						Step 3: Check for the report download button under
+						'Report Status' below.
+						<br />
+						(Or you can download all the reports together in a zip
+						file.)
 					</p>
 					<div className="mt-8 flex flex-col items-center justify-center">
 						<UploadButton onUpload={handleFileUpload} />

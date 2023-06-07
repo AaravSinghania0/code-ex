@@ -78,7 +78,7 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 	return (
 		<div className="w-full flex flex-col items-center justify-center">
 			<hr className="my-8 py-4 w-1/2 border-gray-500" />
-			<table className="table-auto text-gray-300 rounded-md overflow-hidden ring-1 ring-gray-500 shadow-inner bg-gradient-to-br from-indigo-800/20 via-purple-800/20 to-pink-800/20">
+			<table className="table-auto text-gray-300 rounded-md overflow-hidden ring-1 ring-gray-300 shadow-inner bg-gradient-to-br from-indigo-800/30 via-purple-800/30 to-pink-800/30">
 				<thead>
 					<tr>
 						<th className="px-4 py-2">
@@ -86,13 +86,11 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 								className="btn btn-ghost hover:bg-transparent text-red-700 hover:text-red-500 hover:scale-125 transition ease-in-out duration-300"
 								onClick={handleDeleteAll}
 							>
-								<FiTrash2 />
+								<FiTrash2 className="h-5 w-auto" />
 							</button>
 						</th>
 						<th className="px-4 py-2">File Name</th>
-						<th className="px-4 py-2 text-center">
-							Execution Report
-						</th>
+						<th className="px-4 py-2 text-center">Report Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -100,14 +98,14 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 						<tr
 							key={index}
 							// className="hover:bg-gradient-to-br from-indigo-600/40 via-purple-600/40 to-pink-600/40 transition ease-in-out  hover:text-white duration-300"
-							className="hover:bg-purple-600/40 hover:ring-1 ring-indigo-300 hover:text-white shadow-inner transition ease-in-out duration-300"
+							className="hover:bg-purple-500/40 hover:ring-1 ring-gray-300 hover:text-white shadow-inner transition ease-in-out duration-300"
 						>
 							<td className="px-4 py-2">
 								<button
 									className="btn btn-ghost hover:bg-transparent text-red-700  hover:text-red-500 hover:scale-125 transition ease-in-out duration-300"
 									onClick={() => handleDelete(file.name)}
 								>
-									<RxCrossCircled />
+									<RxCrossCircled className="h-5 w-auto" />
 								</button>
 							</td>
 							<td className="px-4 py-2 text-left">
@@ -120,13 +118,13 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 							<td className="px-4 py-2 text-center">
 								{file.reportGenerated ? (
 									<button
-										className="btn btn-outline btn-sm bg-gradient-to-br text-gray-300 hover:from-indigo-300 hover:to-white hover:scale-110 hover:shadow-md transition ease-in-out duration-300"
+										className="btn btn-outline btn-sm bg-gradient-to-br text-gray-300 hover:from-indigo-300/80 hover:to-white hover:scale-110 shadow-md hover:shadow-gray-900/30 transition ease-in-out duration-300"
 										onClick={() =>
 											handleDownload(file.name)
 										}
 									>
-										<FiDownload className="scale-125" />
 										{/* Download */}
+										<FiDownload className="scale-125" />
 									</button>
 								) : (
 									<span className="text-gray-400">
@@ -140,7 +138,7 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 			</table>
 			{files.filter((file) => file.reportGenerated).length > 1 && (
 				<button
-					className="btn btn-md m-4 py-4 text-gray-300 hover:text-white rounded-lg px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500"
+					className="btn btn-md mt-8 py-4 text-gray-300 hover:text-white rounded-lg px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500"
 					onClick={handleDownloadAll}
 				>
 					<ImFolderDownload />

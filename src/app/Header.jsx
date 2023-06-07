@@ -53,6 +53,10 @@ const callsToAction = [
 	{ name: "Contact sales", href: "#", icon: PhoneIcon },
 ];
 
+function classNames(...classes) {
+	return classes.filter(Boolean).join(" ");
+}
+
 export default function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
