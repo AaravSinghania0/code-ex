@@ -138,7 +138,7 @@ export default function Main() {
 						reports on the outputs or errors in the code by
 						virtually executing them simultaneously.
 					</p>
-					<p className="mx-auto w-1/2 mt-4 text-lg leading-8 text-gray-400">
+					<p className="mx-auto lg:w-1/2 mt-4 text-lg leading-8 text-gray-400">
 						Step 1: Choose & upload the files containing the code
 						you wish to run.
 						<br />
