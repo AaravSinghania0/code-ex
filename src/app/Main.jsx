@@ -2,7 +2,7 @@
 import "./globals.css";
 import React, { useState } from "react";
 import { FiUpload } from "react-icons/fi";
-import { BsRocketTakeoff, BsFileEarmarkCode } from "react-icons/bs";
+import { BsRocketTakeoff, BsFileEarmarkCode, BsLinkedin } from "react-icons/bs";
 import FileDisplay from "./FileDisplay";
 
 function UploadButton({ onUpload }) {
@@ -113,11 +113,13 @@ export default function Main() {
 			</div>
 
 			<div className="mx-auto max-w-full py-24 sm:py-28 lg:py-32">
-				<div className="hidden sm:mb-8 sm:flex sm:justify-center">
+				<div className="mb-8 flex justify-center">
 					<div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-400 ring-1 ring-gray-300/20 transition ease-in-out duration-300 hover:text-white hover:ring-gray-300/50">
-						Join our Discord server{" "}
+						<BsLinkedin className="inline mr-1" />
+						Connect with me on LinkedIn{" "}
 						<a
-							href="https://discord.gg/WM55rRufNP"
+							href="https://linkedin.com/in/aaravsinghania"
+							target="_blank"
 							className="font-semibold text-indigo-500/50 transition ease-in-out duration-300 hover:text-indigo-500"
 						>
 							<span
@@ -144,7 +146,7 @@ export default function Main() {
 						<br />
 						(You can remove or add more files later as well.)
 						<br />
-						Step 2: Click on execute to run the selected files.
+						Step 2: Click on 'Execute' to run the selected files.
 						<br />
 						(Note: The API used for code execution is rate-limited
 						to 5 requests per second. It may take some time to run

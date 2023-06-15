@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-	title: "Code Exec",
+	title: "Code-Ex",
 	description:
 		"Run multiple files of code simultaneously and get their outputs in seconds.",
 };
