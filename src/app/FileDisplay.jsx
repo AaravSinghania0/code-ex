@@ -8,65 +8,39 @@ import FileSaver from "file-saver";
 
 export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 	const handleDelete = (fileName) => {
-		// Handle delete logic for the file here
 		onDelete(fileName);
-	};
-
-	const handleDownload = (fileName) => {
-		// Handle download logic for the file here
-		const fileToDownload = files.find((file) => file.name === fileName);
-
-		if (fileToDownload && fileToDownload.reportGenerated) {
-			// Simulating report download for the file
-			// Replace this code with actual download logic
-
-			// Create a dummy report data
-			const reportData = `This is the report for ${fileToDownload.name}`;
-
-			// Create a Blob object from the report data
-			const blob = new Blob([reportData], { type: "text/plain" });
-
-			// Generate a temporary URL for the Blob object
-			const url = URL.createObjectURL(blob);
-
-			// Create a temporary anchor element
-			const link = document.createElement("a");
-			link.href = url;
-			link.download = `${fileToDownload.name}_report.txt`;
-			link.click();
-
-			// Clean up the URL object
-			URL.revokeObjectURL(url);
-		}
 	};
 
 	const handleDeleteAll = () => {
 		onDeleteAll();
 	};
 
-	const handleDownloadAll = () => {
-		// Filter the files that have reports generated
-		const filesWithReports = files.filter((file) => file.reportGenerated);
+	const handleDownload = (fileName) => {
+		const fileToDownload = files.find((file) => file.name === fileName);
+		if (fileToDownload && fileToDownload.reportGenerated) {
+			const reportData = fileToDownload.output;
+			const blob = new Blob([reportData], { type: "text/plain" });
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement("a");
+			link.href = url;
+			link.download = `${fileToDownload.name}_report.txt`;
+			link.click();
+			URL.revokeObjectURL(url);
+		}
+	};
 
+	const handleDownloadAll = () => {
+		const filesWithReports = files.filter((file) => file.reportGenerated);
 		if (filesWithReports.length === 0) {
-			// No files with reports generated
 			return;
 		}
 
 		const zip = new JSZip();
-
-		// Iterate over the files with reports and add them to the zip file
 		filesWithReports.forEach((file) => {
-			// Simulating report data for each file
-			const reportData = `This is the report for ${file.name}`;
-
-			// Add the report file to the zip
+			const reportData = file.output;
 			zip.file(`${file.name}_report.txt`, reportData);
 		});
-
-		// Generate the zip file asynchronously
 		zip.generateAsync({ type: "blob" }).then((content) => {
-			// Save the zip file using FileSaver.js
 			FileSaver.saveAs(content, "reports.zip");
 		});
 	};
@@ -90,7 +64,9 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 							</button>
 						</th>
 						<th className="px-4 py-2">File Name</th>
-						<th className="px-4 py-2 text-center">Report Status</th>
+						<th className="px-4 py-2 text-center">
+							Execution Report
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -112,7 +88,10 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 								{file.name}
 								<br />
 								<div className="badge badge-ghost badge-sm p-3 bg-black text-gray-300 hover:text-white transition ease-in-out duration-300">
-									{file.type || "unknown"}
+									{file.type ||
+										file.name.substring(
+											file.name.lastIndexOf(".")
+										)}
 								</div>
 							</td>
 							<td className="px-4 py-2 text-center">
@@ -126,6 +105,8 @@ export default function FileDisplay({ files, onDelete, onDeleteAll }) {
 										{/* Download */}
 										<FiDownload className="scale-125" />
 									</button>
+								) : file.loading ? (
+									<span className="loading loading-spinner loading-md"></span>
 								) : (
 									<span className="text-gray-400">
 										Not Generated

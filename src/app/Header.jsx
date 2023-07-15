@@ -170,7 +170,8 @@ export default function Header() {
 				</div>
 				<div className="hidden lg:flex lg:flex-1 lg:justify-end">
 					<a
-						href="#"
+						href="https://github.com/AaravSinghania0?tab=repositories"
+						target="_blank"
 						className="text-base font-semibold leading-6 p-2 rounded-lg text-gray-300 hover:text-white hover:bg-black/60 transition ease-in-out hover:scale-110 duration-300 hover:shadow-inner"
 					>
 						View other projects{" "}
@@ -257,7 +258,8 @@ export default function Header() {
 							</div>
 							<div className="py-6">
 								<a
-									href="#"
+									href="https://github.com/AaravSinghania0?tab=repositories"
+									target="_blank"
 									className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:text-white hover:bg-gray-950/60 transition ease-in-out duration-300 hover:ring-1 ring-gray-300/50"
 								>
 									View other projects{" "}

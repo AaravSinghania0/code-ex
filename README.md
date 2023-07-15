@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Code Execution Web App
 
-## Getting Started
+-   This is a web application that allows you to upload and execute multiple code files. It provides detailed reports on the output or errors produced by each file.
 
-First, run the development server:
+-   To try out this app, you can download and modify the sample code files are provided inside the `Demo Files` folder.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The following technologies and libraries are used in this application:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+-   Next.js (React.js framework)
+-   Tailwind CSS
+-   Daisy UI
+-   Piston API (Piston Node Client)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Steps to Try the Web App
 
-## Learn More
+To try this web application, follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/AaravSinghania0/code-ex.git
+    cd code-ex
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```
+2. Install the dependencies:
+    ```bash
+    npm install
+    # or
+    yarn add
+    # or
+    pnpm install
+    ```
+3. Start the development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    ```
 
-## Deploy on Vercel
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Upload code files by clicking on the "Upload Files" button and selecting the desired files.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+6. Click on the "Execute" button to run the uploaded files. The app will display the status for execution reports for each file.
+
+7. Before executing, you can delete individual files, or delete all files by clicking on the trash icon.
+
+8. If the reports are generated, you can download individual reports by clicking on the download icon next to them, or download all reports together in a zip file using the "Download All" button.
+
+### Please Note
+
+-   To see a list of all the supported languages, their versions and aliases, go to `runtimes.js` in the main directory.
+-   As of now, this app does not support parameterized codes (i.e. codes requiring user input).
+
+### Credits
+
+This project is built using the following sources:
+
+-   [Piston API](https://github.com/engineer-man/piston/)
+-   [Piston Node Client](https://github.com/dthree/node-piston)

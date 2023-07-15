@@ -4,6 +4,17 @@ import React, { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { BsRocketTakeoff, BsFileEarmarkCode, BsLinkedin } from "react-icons/bs";
 import FileDisplay from "./FileDisplay";
+import piston from "piston-client";
+import { runtimes } from "../../runtimes";
+
+const client = piston();
+
+const getVersion = (str) =>
+	runtimes.find(
+		(runtime) =>
+			runtime.language === str ||
+			runtime.aliases.includes(str.toLowerCase())
+	)?.version || null;
 
 function UploadButton({ onUpload }) {
 	const handleUpload = (event) => {
@@ -24,6 +35,7 @@ function UploadButton({ onUpload }) {
 				Upload Files
 			</label>
 			<input
+				key={new Date().getTime()}
 				id="file-upload"
 				type="file"
 				multiple
@@ -34,9 +46,9 @@ function UploadButton({ onUpload }) {
 	);
 }
 
-const ReportButton = ({ files, onExecute }) => {
+const ReportButton = ({ files, onExecute, isDisabled }) => {
 	const handleClick = () => {
-		// Handle file upload logic here
+		// Handle file execute logic here
 		onExecute(files);
 	};
 
@@ -44,7 +56,9 @@ const ReportButton = ({ files, onExecute }) => {
 		<div className="relative inline-block m-4 py-2">
 			<label
 				htmlFor="report-btn"
-				className="btn btn-md text-gray-300 hover:text-white rounded-lg py-2 px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500"
+				className={`btn btn-md text-gray-300 hover:text-white rounded-lg py-2 px-4 flex items-center justify-center hover:ring-1 ring-inset ring-gray-300 transition ease-in-out hover:scale-110 duration-300 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 shadow-md hover:shadow-gray-500 ${
+					isDisabled ? "btn-disabled" : ""
+				}`}
 			>
 				<BsFileEarmarkCode />
 				Execute
@@ -61,14 +75,23 @@ const ReportButton = ({ files, onExecute }) => {
 
 export default function Main() {
 	const [files, setFiles] = useState([]);
+	const [isDisabled, setIsDisabled] = useState(false);
 
-	const handleFileUpload = (uploadedFiles) => {
-		const filesWithReports = uploadedFiles.map((file) => ({
-			name: file.name,
-			type: file.type,
-			size: file.size,
-			reportGenerated: false,
-		}));
+	const handleFileUpload = async (uploadedFiles) => {
+		const filesWithReports = await Promise.all(
+			uploadedFiles.map(async (file) => {
+				const content = await file.text();
+				return {
+					name: file.name,
+					type: file.type,
+					size: file.size,
+					content: content,
+					loading: false,
+					reportGenerated: false,
+					output: "",
+				};
+			})
+		);
 		setFiles((prevFiles) => [...prevFiles, ...filesWithReports]);
 	};
 
@@ -76,25 +99,63 @@ export default function Main() {
 		setFiles((prevFiles) =>
 			prevFiles.filter((file) => file.name !== fileName)
 		);
+		const fileInput = document.getElementById("file-upload");
+		if (fileInput) {
+			fileInput.value = "";
+		}
 	};
 
 	const handleDeleteAll = () => {
 		setFiles([]);
 	};
 
-	const handleExecute = (filesToExecute) => {
-		// Send files to Piston API for execution
-		// Update the reportGenerated property accordingly
-		const updatedFiles = files.map((file) => {
-			if (
-				filesToExecute.some((execFile) => execFile.name === file.name)
-			) {
-				return { ...file, reportGenerated: true };
-			} else {
-				return file;
+	const handleExecute = async (filesToExecute) => {
+		setIsDisabled((prevIsDisabled) => !prevIsDisabled);
+		setFiles((prevFiles) =>
+			prevFiles.map((file) => ({
+				...file,
+				loading: true,
+			}))
+		);
+
+		const executeSequentially = async (file) => {
+			if (!file.reportGenerated) {
+				const language = file.name.substring(
+					file.name.lastIndexOf(".") + 1
+				);
+				const version = getVersion(language);
+				let updatedFile = { ...file, loading: true };
+
+				try {
+					const res = await client.execute(language, file.content, {
+						version,
+					});
+					updatedFile = {
+						...updatedFile,
+						reportGenerated: true,
+						output: res.run.output,
+					};
+				} catch (error) {
+					console.log(error);
+				}
+
+				updatedFile.loading = false;
+
+				setFiles((prevFiles) =>
+					prevFiles.map((prevFile) =>
+						prevFile.name === updatedFile.name
+							? updatedFile
+							: prevFile
+					)
+				);
 			}
-		});
-		setFiles(updatedFiles);
+		};
+
+		for (const file of filesToExecute) {
+			await executeSequentially(file);
+			await new Promise((resolve) => setTimeout(resolve, 210));
+		}
+		setIsDisabled((prevIsDisabled) => !prevIsDisabled);
 	};
 
 	return (
@@ -140,7 +201,7 @@ export default function Main() {
 						reports on the outputs or errors in the code by
 						virtually executing them simultaneously.
 					</p>
-					<p className="mx-auto lg:w-1/2 mt-4 text-lg leading-8 text-gray-400">
+					<p className="mx-auto lg:w-2/3 mt-4 text-lg leading-8 text-gray-400">
 						Step 1: Choose & upload the files containing the code
 						you wish to run.
 						<br />
@@ -158,12 +219,17 @@ export default function Main() {
 						(Or you can download all the reports together in a zip
 						file.)
 					</p>
+					<p className="text-pink-700 pt-2">
+						P.S.: For now, there is no functionality to run
+						parameterized codes.
+					</p>
 					<div className="mt-8 flex flex-col items-center justify-center">
 						<UploadButton onUpload={handleFileUpload} />
 						{files.length > 0 && (
 							<ReportButton
 								files={files}
 								onExecute={handleExecute}
+								isDisabled={isDisabled}
 							/>
 						)}
 						{files.length > 0 && (
